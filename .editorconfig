@@ -1,0 +1,14 @@
+root = true
+
+[*]
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_size = 4
+tab_width = 4
+indent_style = tab
+charset = utf-8
+
+[*.cs]
+; warning CA1416: This call site is reachable on all platforms.
+dotnet_diagnostic.CA1416.severity = none
