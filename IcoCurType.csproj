@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <AssemblyName>IcoCurType</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <UseWindowsForms>True</UseWindowsForms>
-		<UseWpf>True</UseWpf>
-		<ImportWindowsDesktopTargets>True</ImportWindowsDesktopTargets>
+    <UseWpf>True</UseWpf>
+    <ImportWindowsDesktopTargets>True</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup>
     <LangVersion>11.0</LangVersion>
@@ -26,6 +26,12 @@
     </Reference>
     <Reference Include="PaintDotNet.Data">
       <HintPath>Paint.Net\PaintDotNet.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PaintDotNet.ComponentModel">
+      <HintPath>Paint.Net\PaintDotNet.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="PaintDotNet.Primitives">
+      <HintPath>Paint.Net\PaintDotNet.Primitives.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

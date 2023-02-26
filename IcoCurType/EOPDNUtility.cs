@@ -1,9 +1,7 @@
-using System.ComponentModel;
 using System;
 using System.Drawing;
 using PaintDotNet;
 using PaintDotNet.Rendering;
-using System.Windows.Media.Media3D;
 
 namespace IcoCurType;
 
@@ -46,7 +44,7 @@ internal static class EOPDNUtility {
 	}
 
 	public static Bitmap GetBitmapLayer(Document doc, int index) {
-		Surface surface = new Surface(doc.Width, doc.Height);
+		using Surface surface = new Surface(doc.Width, doc.Height);
 		Rectangle roi = new Rectangle(0, 0, doc.Width, doc.Height);
 		using (RenderArgs args = new RenderArgs(surface)) {
 			Render((Layer)doc.Layers[index], args, roi);
@@ -57,30 +55,27 @@ internal static class EOPDNUtility {
 
 	public static Bitmap GetBitmapLayerResized(Document Doc, int index, int Width, int Height) {
 		Bitmap result = null;
-		Surface surface = new Surface(Doc.Width, Doc.Height);
+		using Surface surface = new Surface(Doc.Width, Doc.Height);
 		Rectangle roi = new Rectangle(0, 0, Doc.Width, Doc.Height);
 		using (RenderArgs args = new RenderArgs(surface)) {
 			Render((Layer)Doc.Layers[index], args, roi);
 		}
 		if (Doc.Width != Width || Doc.Height != Height) {
-			Surface surface2 = new Surface(Width, Height);
-			surface2.FitSurface(ResamplingAlgorithm.Bilinear, surface);
-			using (Bitmap original = surface2.CreateAliasedBitmap()) {
-				result = new Bitmap(original);
-			}
-			surface2.Dispose();
+			using Surface surface2 = new Surface(Width, Height);
+			surface2.FitSurface(ResamplingAlgorithm.LinearLowQuality, surface);
+			using Bitmap original = surface2.CreateAliasedBitmap();
+			result = new Bitmap(original);
 		} else {
 			using Bitmap original2 = surface.CreateAliasedBitmap();
 			result = new Bitmap(original2);
 		}
-		surface.Dispose();
 		return result;
 	}
 
 	public static Bitmap ResizedBitmapFromSurface(Surface surf, Size desiredSize) {
 		if (desiredSize.Width != surf.Width || desiredSize.Height != surf.Height) {
-			Surface surface = new Surface(desiredSize);
-			surface.FitSurface(ResamplingAlgorithm.Bilinear, surf);
+			using Surface surface = new Surface(desiredSize);
+			surface.FitSurface(ResamplingAlgorithm.LinearLowQuality, surf);
 			return new Bitmap(surface.CreateAliasedBitmap());
 		}
 		using Bitmap original = surf.CreateAliasedBitmap();
@@ -89,7 +84,7 @@ internal static class EOPDNUtility {
 
 	public static Surface ResizeSurface(Size size, Surface surf) {
 		Surface surface = new Surface(size);
-		ResamplingAlgorithm algorithm = ResamplingAlgorithm.SuperSampling;
+		ResamplingAlgorithm algorithm = ResamplingAlgorithm.AdaptiveBestQuality;
 		if (size.Width > surf.Width || size.Height > surf.Height) {
 			algorithm = ResamplingAlgorithm.NearestNeighbor;
 		}
